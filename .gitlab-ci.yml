@@ -1,0 +1,14 @@
+default:
+  image: registry.gitlab.com/demo-account/demo
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+  script:
+    - echo $imageTag
+    - yarn install --frozen-lockfile --ignore-optional --production=true
+    - cdk deploy --require-approval=never -c imageTag=$imageTag
